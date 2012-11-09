@@ -17,9 +17,13 @@ $layout = new LayoutView();
 // Setup app
 $app = new \Slim\Slim(array(
   'mode' => 'development',
-  'debug' => true,
   'view' => $layout,
 ));
+
+//Error
+$app->error(function(\Exception $e) use ($app) {
+  $app->render('error.php', array('message' => $e->getMessage()));
+});
 
 //Load redis server
 try{
@@ -49,6 +53,17 @@ $app->post('/', function() use ($app, $redis) {
 //Load key
 $app->get('/key/:key', function($key) use ($app, $redis){
   $app->render('key.php', array('key' => $redis->get($key)));
+});
+
+//Delete
+$app->post('/delete', function() use ($app, $redis){
+
+  $keys = $_POST['keys'];
+  if(!$keys)
+    throw new Exception("No keys to delete");
+
+  $redis->delete($keys);
+  $app->render('delete.php', array('keys' => $keys));
 });
 
 //Infos

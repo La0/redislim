@@ -27,11 +27,6 @@ try{
   $app->render('error.php', array('message' => $e->getMessage()));
 }
 
-/*
-$app->get('/search/:search', 'search');
-$app->get('/key/:key', 'key');
-*/
-
 //Index
 $app->get('/', function() use ($app, $redis) {
   if(!$redis) return;
@@ -48,6 +43,16 @@ $app->post('/', function() use ($app, $redis) {
     'keys' => $redis->search($search),
     'search' => $search,
   ));
+});
+
+//Load key
+$app->get('/key/:key', function($key) use ($app, $redis){
+  $app->render('key.php', array('key' => $redis->get($key)));
+});
+
+//Infos
+$app->get('/infos', function() use ($app, $redis) {
+  $app->render('infos.php', array('infos' => $redis->infos()));
 });
 
 //Run !

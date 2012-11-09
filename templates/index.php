@@ -1,3 +1,8 @@
+<form class="form-search" method="POST" action="?">
+  <input type="text" class="input-large" name="search" value="<?=$search?>"/>
+  <button type="submit" class="btn btn-primary ">Search keys</button>
+</form>
+
 <table class="table table-condensed table-bordered">
   <tr>
     <th>Key</th>

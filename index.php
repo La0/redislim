@@ -35,8 +35,19 @@ $app->get('/key/:key', 'key');
 //Index
 $app->get('/', function() use ($app, $redis) {
   if(!$redis) return;
-  $keys = $redis->search();
-  $app->render('index.php', array('keys' => $keys));
+  $app->render('index.php', array('keys' => $redis->search()));
+});
+
+//Search
+$app->post('/', function() use ($app, $redis) {
+  if(!$redis) return;
+  $search = trim($_POST['search']);
+  if(!$search)
+    $search = '*'; // all keys by default
+  $app->render('index.php', array(
+    'keys' => $redis->search($search),
+    'search' => $search,
+  ));
 });
 
 //Run !

@@ -1,4 +1,4 @@
-<form class="form-search" method="POST" action="?">
+<form class="form-search" method="POST" action="<?=ROOT_URL?>">
   <input type="text" class="input-large" name="search" value="<?=$search?>"/>
   <button type="submit" class="btn btn-primary ">Search keys</button>
 </form>

@@ -1,5 +1,5 @@
 <p class="pull-right">
-  <a href="../" class="btn btn-success">Back to home</a>
+  <a href="<?=ROOT_URL?>" class="btn btn-success">Back to home</a>
 </p>
 
 <h1><?=$key['key']?></h1>

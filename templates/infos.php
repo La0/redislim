@@ -1,5 +1,5 @@
 <p>
-  <a href="../" class="btn btn-success">Back to home</a>
+  <a href="<?=ROOT_URL?>" class="btn btn-success">Back to home</a>
 </p>
 
 <table class="table table-condensed table-bordered">

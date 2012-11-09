@@ -11,11 +11,11 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="?">RedisSlim</a>
+      <a class="brand" href="<?=ROOT_URL?>">RedisSlim</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
-          <li><a href=".">Home</a></li>
-          <li><a href="./infos">Infos</a></li>
+          <li><a href="<?=ROOT_URL?>">Home</a></li>
+          <li><a href="<?=ROOT_URL?>infos">Infos</a></li>
         </ul>
       </div>
       <div class="navbar-text pull-right">

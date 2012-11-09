@@ -8,6 +8,7 @@ There are two dependencies:
 * [Slim](http://slimframework.com), a php micro framework
 
 After cloning this repo, you just have to install Slim using composer:
+
     curl -s https://getcomposer.org/installer | php
     php composer.phar install
 

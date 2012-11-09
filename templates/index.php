@@ -11,7 +11,7 @@
   </tr>
   <? foreach($keys as $key => $key_data): ?>
   <tr>
-    <td><?=$key?></td>
+    <td><a href="key/<?=$key?>"><?=$key?></a></td>
     <td><?=$key_data['type_str']?></td>
     <td>
       <?=($key_data['hits'] ? $key_data['hits'] : '-' )?>

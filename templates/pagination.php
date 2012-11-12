@@ -1,4 +1,4 @@
-<? if($pagination['last_page'] > 1): ?>
+<? if($pagination['last_page'] > 1 && $pagination['page'] > 0): ?>
 <ul class="breadcrumb">
 
 <? if($pagination['page'] > 1): ?>
@@ -24,5 +24,13 @@
 <? endif; ?>
 
   <li>(<?=(($pagination['page']-1)*$pagination['nb_page'])?>-<?=(($pagination['page'])*$pagination['nb_page'])?>/<?=$pagination['total']?>)</li>
+
+  <li><a href="<?=ROOT_URL?>search/<?=urlencode($search)?>/all">View all</a></li>
 </ul>
+<? endif; ?>
+
+<? if($pagination['page'] == 0): ?>
+<p>
+  <a class="btn btn-primary" href="<?=ROOT_URL?>search/<?=urlencode($search)?>/page/1">Back to paginated listing</a>
+</p>
 <? endif; ?>

@@ -59,11 +59,17 @@ function index($page = 1){
 //Search
 $app->post('/', 'search');
 $app->get('/search/:search/page/:page', 'search');
+$app->get('/search/:search/all', 'search');
 
 function search($search = false, $page = 1) {
   $app = \Slim\Slim::getInstance();
   $redis = RedisServer::getInstance();
   if(!$redis) return;
+
+  $request = $app->request();
+  if(substr($request->getResourceUri(), -4) == '/all')
+    $page = 0; // view all default arg
+
   $search = $search ? $search : trim($_POST['search']);
   if(!$search)
     $search = '*'; // all keys by default

@@ -3,6 +3,15 @@
 class RedisServer {
   private $redis = null;
 
+  private static $types = array(
+    Redis::REDIS_STRING => 'string',
+    Redis::REDIS_SET => 'set',
+    Redis::REDIS_LIST => 'list',
+    Redis::REDIS_ZSET => 'zset',
+    Redis::REDIS_HASH => 'hash',
+    Redis::REDIS_NOT_FOUND => 'other',
+  );
+
   //Connect to redis server
   public function __construct($host='127.0.0.1', $port=6379, $password=false){
     $this->redis = new Redis();
@@ -43,13 +52,14 @@ class RedisServer {
   public function get($key){
     $type = $this->redis->type($key);
     $data = null;
-    $type_str = '';
+    $type_str = self::$types[$type];
     switch($type){
       case Redis::REDIS_STRING:
-        $type_str = 'string';
         $data = $this->redis->get($key);
         break;
-
+      case Redis::REDIS_HASH:
+        $data = $this->redis->hGetAll($key);
+        break;
     }
     return compact('key', 'type', 'type_str', 'data');
   }
@@ -60,17 +70,9 @@ class RedisServer {
 
   private function get_type($key){
     $type = $this->redis->type($key);
-    $types = array(
-      Redis::REDIS_STRING => 'string',
-      Redis::REDIS_SET => 'set',
-      Redis::REDIS_LIST => 'list',
-      Redis::REDIS_ZSET => 'zset',
-      Redis::REDIS_HASH => 'hash',
-      Redis::REDIS_NOT_FOUND => 'other',
-    );
     return array(
       'type' => $type,
-      'type_str' => $types[$type],
+      'type_str' => self::$types[$type],
     );
   }
 

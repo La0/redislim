@@ -7,7 +7,26 @@
   <span class="badge"><?=$key['type_str']?></span>
 </p>
 
-
+<? if($key['type'] == Redis::REDIS_STRING): ?>
 <pre>
 <?=htmlentities($key['data'])?>
 </pre>
+
+<? elseif($key['type'] == Redis::REDIS_HASH): ?>
+
+  <table class="table table-bordered">
+  <tr>
+    <th>Key</th>
+    <th>Value</th>
+  </tr>
+  <? foreach($key['data'] as $k => $v): ?>
+  <tr>
+    <td><?=$k?></td>
+    <td><?=$v?></td>
+  </tr>
+  <? endforeach; ?>
+  </table>
+<? else: ?>
+
+<p class="alert alert-error">Unknown type !</p>
+<? endif; ?>

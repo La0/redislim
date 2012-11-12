@@ -46,7 +46,7 @@ class RedisServer {
 
     //Build pagination
     $nb = count($keys_raw);
-    $pagination = array('total' => $nb, 'page' => $page, 'last_page' => ceil($nb/$nb_page));
+    $pagination = array('total' => $nb, 'page' => $page, 'last_page' => ceil($nb/$nb_page), 'nb_page' => $nb_page);
     if($page > 0)
       $keys_raw = array_slice($keys_raw, ($page-1) * $nb_page, $nb_page);
 

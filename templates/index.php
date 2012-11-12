@@ -5,18 +5,7 @@
   <button type="submit" class="btn btn-primary ">Search keys</button>
 </form>
 
-<? if($pagination['last_page'] > 1): ?>
-<ul class="breadcrumb">
-  <li>Pages:</li>
-<? for($i = 1; $i <= $pagination['last_page']; $i++): ?>
-  <? if($i == $pagination['page']): ?>
-  <li class="active"><?=$i?></li>
-  <? else: ?>
-  <li><a href="<?=ROOT_URL?>search/<?=urlencode($search)?>/page/<?=$i?>"><?=$i?></a></li>
-  <? endif; ?>
-<? endfor; ?>
-</ul>
-<? endif; ?>
+<? include 'templates/pagination.php'; ?>
 
 <form method="POST" action="<?=ROOT_URL?>delete">
 
@@ -56,6 +45,8 @@
   </tr>
   <? endforeach; ?>
 </table>
+
+<? include 'templates/pagination.php'; ?>
 
 <button class="btn btn-danger pull-right" type="submit">Delete selected keys</button>
 

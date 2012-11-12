@@ -2,6 +2,7 @@
 <head>
   <title>RediSlim</title>
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
   <style>
   body { padding-top: 60px; }
   </style>

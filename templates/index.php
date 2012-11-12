@@ -9,7 +9,7 @@
 
 <form method="POST" action="<?=ROOT_URL?>delete">
 
-<table class="table table-condensed table-bordered">
+<table class="table table-condensed table-bordered table-striped">
   <tr>
     <th>Key</th>
     <th>Type</th>
@@ -20,7 +20,7 @@
   </tr>
   <? foreach($keys as $key => $key_data): ?>
   <tr>
-    <td><a href="key/<?=$key?>"><?=$key?></a></td>
+    <td><a href="key/<?=$key?>" style="font-family: 'Inconsolata', monospace;"><?=$key?></a></td>
     <td><?=$key_data['type_str']?></td>
     <td>
       <? if($key_data['size']): ?>

@@ -3,6 +3,9 @@
 class RedisServer {
   private $redis = null;
 
+  private $hits_key = 'hits';
+  private $hits = array();
+
   private static $types = array(
     Redis::REDIS_STRING => 'string',
     Redis::REDIS_SET => 'set',
@@ -12,13 +15,16 @@ class RedisServer {
     Redis::REDIS_NOT_FOUND => 'other',
   );
 
-  //Connect to redis server
   public function __construct($host='127.0.0.1', $port=6379, $password=false){
+    //Connect to redis server
     $this->redis = new Redis();
     if(!$this->redis->connect($host, $port))
       throw new Exception("Invalid connection on $host:$port");
     if($password && !$this->redis->auth($password))
       throw new Exception("Invalid password.");
+
+    //Load hits
+    $this->hits = $this->redis->hGetAll($this->hits_key);
   }
 
   public function search($filter = '*', $page = 1, $nb_page = 20){
@@ -28,17 +34,12 @@ class RedisServer {
     $keys = array();
     foreach($keys_raw as $k){
 
-      //If valid hit, just add it to the key's data
-      // that is already there in $keys because of sort
-      if(substr($k, -5) == '_hits'){
-        $src_key = substr($k, 0, -5);
-        if(in_array($src_key, $keys_raw)){
-          $keys[$src_key]['hits'] = (int)$this->redis->get($k);
-          continue;
-        }
-      }
+      //Load type & hits
+      $key_data = $this->get_type($k);
+      if($this->hits[$k])
+        $key_data['hits'] = $this->hits[$k];
 
-      $keys[$k] = $this->get_type($k);
+      $keys[$k] = $key_data;
     }
 
     return $keys;

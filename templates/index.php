@@ -11,6 +11,7 @@
     <th>Type</th>
     <th>Size</th>
     <th>Hit</th>
+    <th>TTL</th>
     <th><i class="icon-fire"></i></th>
   </tr>
   <? foreach($keys as $key => $key_data): ?>
@@ -26,6 +27,13 @@
     </td>
     <td>
       <?=($key_data['hits'] ? $key_data['hits'] : '-' )?>
+    </td>
+    <td>
+      <? if($key_data['ttl']): ?>
+      <span title="<?=$key_data['ttl']?>"><?=($key_data['ttl'] > 0 ? $key_data['ttl_str'] : '<i class="icon-repeat"></i>')?></span>
+      <? else: ?>
+      -
+      <? endif; ?>
     </td>
     <td>
       <input type="checkbox" name="keys[]" value="<?=$key?>" checked="checked" />

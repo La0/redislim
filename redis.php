@@ -42,6 +42,9 @@ class RedisServer {
       //Load size
       $key_data = array_merge($key_data, $this->get_size($k, $key_data['type']));
 
+      //Load ttl
+      $key_data = array_merge($key_data, $this->get_ttl($k));
+
       $keys[$k] = $key_data;
     }
 
@@ -81,6 +84,13 @@ class RedisServer {
     );
   }
 
+  //Helper to get a key ttl
+  private function get_ttl($key){
+    $ttl = $this->redis->ttl($key);
+    $ttl_str = $this->human_time($ttl);
+    return compact('ttl', 'ttl_str');
+  }
+
   //Helper to get a key size
   private function get_size($key, $type){
     $size = $size_str = 0;
@@ -103,6 +113,23 @@ class RedisServer {
         : (($size>>20) ? round($size/(1<<20),1).' Mb'
            : (($size>>10) ? round($size/(1<<10),1).' Kb'
               :((int)$size)));
+  }
+
+  //Get a human readable time, from seconds
+  private function human_time($time){
+    $out = '';
+    if($time > 86400){
+      $days = (int)($time / (86400));
+      $out .= "$days d ";
+      $time = $time % (86400);
+    }
+
+    $hours = sprintf('%02s', (int)($time / 3600));
+    $minutes = sprintf('%02s', (int)($time / 60));
+    $seconds = sprintf('%02s', (int)($time % 60));
+    $out .= "$hours:$minutes:$seconds";
+
+    return $out;
   }
 
 }

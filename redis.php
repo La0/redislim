@@ -27,9 +27,28 @@ class RedisServer {
     $this->hits = $this->redis->hGetAll($this->hits_key);
   }
 
-  public function search($filter = '*', $page = 1, $nb_page = 20){
-    $keys_raw = $this->redis->keys($filter);
+  //Instance
+  private static $instance = null;
+  public static function init($host='127.0.0.1', $port=6379, $password=false){
+    if(self::$instance != null)
+      throw new Exception("An instance of RedisServer is already created.");
+    return self::$instance = new RedisServer($host, $port, $password);
+  }
+
+  public static function getInstance(){
+    return self::$instance;
+  }
+
+  //Search keys and add theirs attributes (ttl, size, type)
+  public function search($search = '*', $page = 0, $nb_page = 20){
+    $keys_raw = $this->redis->keys($search);
     sort($keys_raw);
+
+    //Build pagination
+    $nb = count($keys_raw);
+    $pagination = array('total' => $nb, 'page' => $page, 'last_page' => ceil($nb/$nb_page));
+    if($page > 0)
+      $keys_raw = array_slice($keys_raw, ($page-1) * $nb_page, $nb_page);
 
     $keys = array();
     foreach($keys_raw as $k){
@@ -48,7 +67,7 @@ class RedisServer {
       $keys[$k] = $key_data;
     }
 
-    return $keys;
+    return compact('keys', 'pagination', 'search');
   }
   
   //Server status & infos

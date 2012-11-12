@@ -3,6 +3,7 @@ define('REDIS_HOST', '127.0.0.1');
 define('REDIS_PORT', 6379);
 define('REDIS_PASSWORD', false);
 define('ROOT_URL', '/');
+define('ITEMS_PAGE', 50);
 
 require 'vendor/autoload.php';
 
@@ -27,28 +28,35 @@ $app->error(function(\Exception $e) use ($app) {
 
 //Load redis server
 try{
-  $redis = new RedisServer(REDIS_HOST, REDIS_PORT, REDIS_PASSWORD);
+  $redis = RedisServer::init(REDIS_HOST, REDIS_PORT, REDIS_PASSWORD);
 }catch(Exception $e){
   $app->render('error.php', array('message' => $e->getMessage()));
 }
 
-//Index
-$app->get('/', function() use ($app, $redis) {
+//Index Paginated
+$app->get('/', 'index');
+$app->get('/page/:page', 'index');
+
+function index($page = 1){
+  $app = \Slim\Slim::getInstance();
+  $redis = RedisServer::getInstance();
   if(!$redis) return;
-  $app->render('index.php', array('keys' => $redis->search()));
-});
+  $app->render('index.php', $redis->search('*', $page, ITEMS_PAGE));
+}
 
 //Search
-$app->post('/', function() use ($app, $redis) {
+$app->post('/', 'search');
+$app->get('/search/:search/page/:page', 'search');
+
+function search($search = false, $page = 1) {
+  $app = \Slim\Slim::getInstance();
+  $redis = RedisServer::getInstance();
   if(!$redis) return;
-  $search = trim($_POST['search']);
+  $search = $search ? $search : trim($_POST['search']);
   if(!$search)
     $search = '*'; // all keys by default
-  $app->render('index.php', array(
-    'keys' => $redis->search($search),
-    'search' => $search,
-  ));
-});
+  $app->render('index.php', $redis->search($search, $page, ITEMS_PAGE));
+}
 
 //Load key
 $app->get('/key/:key', function($key) use ($app, $redis){

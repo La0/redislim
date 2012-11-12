@@ -1,7 +1,22 @@
+<h1><?=$pagination['total']?> keys</h1>
+
 <form class="form-search" method="POST" action="<?=ROOT_URL?>">
   <input type="text" class="input-large" name="search" value="<?=$search?>"/>
   <button type="submit" class="btn btn-primary ">Search keys</button>
 </form>
+
+<? if($pagination['last_page'] > 1): ?>
+<ul class="breadcrumb">
+  <li>Pages:</li>
+<? for($i = 1; $i <= $pagination['last_page']; $i++): ?>
+  <? if($i == $pagination['page']): ?>
+  <li class="active"><?=$i?></li>
+  <? else: ?>
+  <li><a href="<?=ROOT_URL?>search/<?=urlencode($search)?>/page/<?=$i?>"><?=$i?></a></li>
+  <? endif; ?>
+<? endfor; ?>
+</ul>
+<? endif; ?>
 
 <form method="POST" action="<?=ROOT_URL?>delete">
 

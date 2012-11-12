@@ -9,6 +9,7 @@
   <tr>
     <th>Key</th>
     <th>Type</th>
+    <th>Size</th>
     <th>Hit</th>
     <th><i class="icon-fire"></i></th>
   </tr>
@@ -16,6 +17,13 @@
   <tr>
     <td><a href="key/<?=$key?>"><?=$key?></a></td>
     <td><?=$key_data['type_str']?></td>
+    <td>
+      <? if($key_data['size']): ?>
+      <span title="<?=$key_data['size']?>"><?=$key_data['size_str'] ?></span>
+      <? else: ?>
+      -
+      <? endif; ?>
+    </td>
     <td>
       <?=($key_data['hits'] ? $key_data['hits'] : '-' )?>
     </td>

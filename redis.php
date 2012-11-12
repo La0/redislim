@@ -39,6 +39,9 @@ class RedisServer {
       if($this->hits[$k])
         $key_data['hits'] = $this->hits[$k];
 
+      //Load size
+      $key_data = array_merge($key_data, $this->get_size($k, $key_data['type']));
+
       $keys[$k] = $key_data;
     }
 
@@ -69,12 +72,37 @@ class RedisServer {
     return $this->redis->delete($keys);
   }
 
+  //Helper to get a key type & its according string
   private function get_type($key){
     $type = $this->redis->type($key);
     return array(
       'type' => $type,
       'type_str' => self::$types[$type],
     );
+  }
+
+  //Helper to get a key size
+  private function get_size($key, $type){
+    $size = $size_str = 0;
+    switch($type){
+      case Redis::REDIS_STRING:
+        $size = $this->redis->strlen($key);
+        $size_str = $this->human_size($size);
+        break;
+      case Redis::REDIS_HASH:
+        $size = $size_str = $this->redis->hLen($key);
+        break;
+    }
+    return compact('size', 'size_str');
+  }
+
+  //Get a human readable file size, thanks to yks.
+  private function human_size($size){
+    $size=sprintf("%f",$size);
+    return ($size>>30) ? round($size/(1<<30),1).' Gb'
+        : (($size>>20) ? round($size/(1<<20),1).' Mb'
+           : (($size>>10) ? round($size/(1<<10),1).' Kb'
+              :((int)$size)));
   }
 
 }

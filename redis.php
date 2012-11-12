@@ -125,7 +125,7 @@ class RedisServer {
     }
 
     $hours = sprintf('%02s', (int)($time / 3600));
-    $minutes = sprintf('%02s', (int)($time / 60));
+    $minutes = sprintf('%02s', (int)($time % 3600 / 60));
     $seconds = sprintf('%02s', (int)($time % 60));
     $out .= "$hours:$minutes:$seconds";
 

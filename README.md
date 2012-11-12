@@ -12,7 +12,15 @@ After cloning this repo, you just have to install Slim using composer:
     curl -s https://getcomposer.org/installer | php
     php composer.phar install
 
-You can setup your redis configuration in the first lines of index.php
+You can setup your redis configuration by editing a config.json file:
+
+    {
+        "REDIS_HOST" : 'redis.host.com',
+        "REDIS_PORT" : '4242',
+        "REDIS_PASSWORD" : 'password',
+        "ROOT_URL" : '/redislim',
+        "ITEMS_PAGE" : 50,
+    }
 
 ## Thanks
 Made while working at [ActivScreen](http://www.activscreen.com) and using [Bootstrap](http://twitter.github.com/bootstrap/)

@@ -1,9 +1,21 @@
 <?php
-define('REDIS_HOST', '127.0.0.1');
-define('REDIS_PORT', 6379);
-define('REDIS_PASSWORD', false);
-define('ROOT_URL', '/');
-define('ITEMS_PAGE', 50);
+//Default configuration
+$conf_defaults = array(
+  'REDIS_HOST'    => '127.0.0.1',
+  'REDIS_PORT'    => 6379,
+  'REDIS_PASSWORD' => false,
+  'ROOT_URL'      => '/',
+  'ITEMS_PAGE'    => 50,
+);
+
+//Load configuration from config.json
+$conf_file = 'config.json';
+$conf = @json_decode(file_get_contents($conf_file), true);
+if(!$conf)
+  $conf = array();
+$conf = array_merge($conf_defaults, $conf);
+foreach($conf as $k => $v)
+  define($k, $v);
 
 require 'vendor/autoload.php';
 

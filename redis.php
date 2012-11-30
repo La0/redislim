@@ -124,6 +124,9 @@ class RedisServer {
       case Redis::REDIS_HASH:
         $size = $size_str = $this->redis->hLen($key);
         break;
+      case Redis::REDIS_SET:
+        $size = $size_str = $this->redis->sSize($key);
+        break;
     }
     return compact('size', 'size_str');
   }

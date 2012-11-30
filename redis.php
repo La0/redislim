@@ -86,6 +86,9 @@ class RedisServer {
       case Redis::REDIS_HASH:
         $data = $this->redis->hGetAll($key);
         break;
+      case Redis::REDIS_SET:
+        $data = $this->redis->sMembers($key);
+        break;
     }
     return compact('key', 'type', 'type_str', 'data');
   }

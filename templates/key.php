@@ -26,6 +26,22 @@
   </tr>
   <? endforeach; ?>
   </table>
+
+<? elseif($key['type'] == Redis::REDIS_SET): ?>
+
+  <table class="table table-bordered">
+  <tr>
+    <th>Position</th>
+    <th>Value</th>
+  </tr>
+  <? foreach($key['data'] as $pos => $v): ?>
+  <tr>
+    <td><?=$pos?></td>
+    <td><?=$v?></td>
+  </tr>
+  <? endforeach; ?>
+  </table>
+
 <? else: ?>
 
 <p class="alert alert-error">Unknown type !</p>

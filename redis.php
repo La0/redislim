@@ -42,6 +42,8 @@ class RedisServer {
   //Search keys and add theirs attributes (ttl, size, type)
   public function search($search = '*', $page = 0, $nb_page = 20){
     $keys_raw = $this->redis->keys($search);
+if(!$keys_raw)
+	$keys_raw = array();
     sort($keys_raw);
 
     //Build pagination
@@ -89,6 +91,12 @@ class RedisServer {
       case Redis::REDIS_SET:
         $data = $this->redis->sMembers($key);
         break;
+      case Redis::REDIS_ZSET:
+        $data = $this->redis->zRange($key, 0, -1);
+        break;
+      case Redis::REDIS_LIST:
+        $data = $this->redis->lRange($key, 0, -1);
+        break;
     }
     return compact('key', 'type', 'type_str', 'data');
   }
@@ -126,6 +134,12 @@ class RedisServer {
         break;
       case Redis::REDIS_SET:
         $size = $size_str = $this->redis->sSize($key);
+        break;
+      case Redis::REDIS_ZSET:
+        $size = $size_str = $this->redis->zSize($key);
+        break;
+      case Redis::REDIS_LIST:
+        $size = $size_str = $this->redis->lSize($key);
         break;
     }
     return compact('size', 'size_str');

@@ -27,7 +27,7 @@
   <? endforeach; ?>
   </table>
 
-<? elseif($key['type'] == Redis::REDIS_SET): ?>
+<? elseif($key['type'] == Redis::REDIS_SET || $key['type'] == Redis::REDIS_ZSET || $key['type'] == Redis::REDIS_LIST): ?>
 
   <table class="table table-bordered">
   <tr>

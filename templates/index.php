@@ -20,7 +20,7 @@
   </tr>
   <? foreach($keys as $key => $key_data): ?>
   <tr>
-    <td><a href="<?=ROOT_URL?>key/<?=$key?>" style="font-family: 'Inconsolata', monospace;"><?=$key?></a></td>
+    <td><a href="<?=ROOT_URL?>key/<?=urlencode($key)?>" style="font-family: 'Inconsolata', monospace;"><?=$key?></a></td>
     <td><?=$key_data['type_str']?></td>
     <td>
       <? if($key_data['size']): ?>
